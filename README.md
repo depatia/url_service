@@ -26,6 +26,10 @@ POST `/api/generate-report`
 GET `/health`
 Проверка работоспособности сервера на текущий момент.
 
+## Swagger
+
+[`localhost:8080/swagger`](localhost:8080/swagger])
+
 ## Конфигурация
 
 Конфигурация находится в файле config.yaml
