@@ -12,6 +12,7 @@ import (
 )
 
 type HealthCheckerService struct {
+	mu     *sync.Mutex
 	logger *logrus.Logger
 	repo   interfaces.IRepository
 	cfg    *config.Config
@@ -19,6 +20,7 @@ type HealthCheckerService struct {
 
 func NewHealthCheckerService(logger *logrus.Logger, repo interfaces.IRepository, cfg *config.Config) *HealthCheckerService {
 	return &HealthCheckerService{
+		mu:     &sync.Mutex{},
 		logger: logger,
 		repo:   repo,
 		cfg:    cfg,
@@ -34,11 +36,14 @@ func (lc *HealthCheckerService) CheckSitesAvailability(ctx context.Context, link
 		wg.Add(1)
 		go func(l string) { // передаем явно для избежания гонки
 			defer wg.Done()
-			if lc.checkSiteAvailability(ctx, link) {
-				resultedLinks[link] = "available"
-			} else {
-				resultedLinks[link] = "not available"
+			status := "not available"
+			if lc.checkSiteAvailability(ctx, l) {
+				status = "available"
 			}
+
+			lc.mu.Lock()
+			resultedLinks[l] = status
+			lc.mu.Unlock()
 		}(link)
 	}
 

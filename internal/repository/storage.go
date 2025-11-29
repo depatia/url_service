@@ -6,13 +6,14 @@ import (
 )
 
 type Repository struct {
-	mu    sync.RWMutex
+	mu    *sync.RWMutex
 	links map[int]map[string]string // словарь сайтов. ключ - уникальный номер запроса, значение - словарь с сайтами в виде "https://google.com": "(not) available"
 }
 
 func NewRepository() *Repository {
 	return &Repository{
 		links: make(map[int]map[string]string, 0),
+		mu:    &sync.RWMutex{},
 	}
 }
 
