@@ -1,0 +1,85 @@
+definitions:
+  dto.CheckSitesAvailabilityRequest:
+    properties:
+      links:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.CheckSitesAvailabilityResponse:
+    properties:
+      links:
+        additionalProperties:
+          type: string
+        type: object
+      links_num:
+        type: integer
+    type: object
+  dto.GenerateReportRequest:
+    properties:
+      links_list:
+        items:
+          type: integer
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /api/check-sites:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Ссылки для проверки
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CheckSitesAvailabilityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CheckSitesAvailabilityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: проверяет состояние переданных сайтов и возвращает их статус, а также
+        уникальный номер запроса
+  /api/generate-report:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Уникальный идентификатор запроса
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateReportRequest'
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: возвращает отчет в виде pdf о проверенных сайтах (из кэша)
+swagger: "2.0"
