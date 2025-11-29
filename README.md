@@ -28,7 +28,7 @@ GET `/health`
 
 ## Swagger
 
-[localhost:8080/swagger](localhost:8080/swagger])
+[`localhost:8080/swagger`](http://localhost:8080/swagger])
 
 ## Конфигурация
 
