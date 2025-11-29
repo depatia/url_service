@@ -36,4 +36,4 @@ GET `/health`
 
 ## Архитектура
 
-Проект построен по принципам **Clean Architecture** и **Dependency Injection**:
+Проект построен по принципам **Clean Architecture** и **Dependency Injection**
